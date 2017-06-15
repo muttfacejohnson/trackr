@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>title</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+  </head>
+  <body>
+      <div class="container">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" style="color: white;" href="/users">Battlfield 1 Stats</a>
+                </div>
+            </div><!-- /.container-fluid -->
+        </nav>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    {{#each headers}}
+                        <td>{{this}}</td>
+                    {{/each}}
+                </tr>
+            </thead>
+            <tbody>
+                {{#each user}}
+                    <tr>
+                        {{!--<td>{{this.id}}</td>--}}
+                        <td class="user">{{this.name}}</td>
+                        <td >{{this.kdr}}</td>
+                        <td >{{this.kills}}</td>
+                        <td >{{this.deaths}}</td>
+                        <td >{{this.wins}}</td>
+                        <td >{{this.losses}}</td>
+                        <td >{{this.headShots}}</td>
+                        <td >{{this.longestHeadShot}}</td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+      </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="application/javascript">
+        (function($){
+            $(document).ready(function(){
+                $('.table').DataTable({
+                    "order": [[1, "desc"]]
+                });
+
+                //Now update users
+                $('.user').each(function(user){
+                    let text = $(this).text();
+                    setTimeout(function(){
+                        $.ajax({
+                            url: '/users/' + text
+                        })
+                        .then(function(user){
+                            {{!--console.log(user);--}}
+                        })
+                        .catch(function(){
+                            console.log(error.statusText);
+                        });
+                    }, 2000);
+                });
+            });
+        })(jQuery)
+    </script> 
+  </body>
+</html>
+
+
